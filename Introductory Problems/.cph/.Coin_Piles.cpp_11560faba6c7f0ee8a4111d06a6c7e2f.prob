@@ -1,0 +1,1 @@
+{"name":"Local: Coin_Piles","url":"/home/sanan/Desktop/CSDS_Sheet/Introductory Problems/Coin_Piles.cpp","tests":[{"id":1751882190462,"input":"3\n2 1\n2 2\n3 3","output":"YES\nNO\nYES"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/sanan/Desktop/CSDS_Sheet/Introductory Problems/Coin_Piles.cpp","group":"local","local":true}
