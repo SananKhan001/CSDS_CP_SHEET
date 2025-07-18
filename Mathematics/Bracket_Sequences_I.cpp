@@ -1,3 +1,18 @@
+/*
+    video: https://www.youtube.com/watch?v=oZHY0FeBFtw&t=964s
+    if n is odd then ans will be 0
+    if n is even, n = 2k
+        then, there will be 2k places to put '(' or ')'
+        but, number of '(' should be equal to number of ')'
+        therefore there will be 2kCk such ways through which we can select those places 
+        therefore there will be 2kCk such permutations
+        now, if we observe all permutations which has equal number of '(' and ')'
+        and switch all '(' after the position from where they are failing into ')'
+        we can see those permutations have k-1 '(' and k+1 ')'
+
+        total number of such permutations will be 2kCk-1 or 2kCk+1, both expressions are equal
+    therefore, ans = 2kCk - 2kC(k-1)
+*/
 #include <bits/stdc++.h>  // This will work only for g++ compiler.
 #define for0(i, n) for (int i = 0; i < (int)(n); ++i) // 0 based indexing
 #define for1(i, n) for (int i = 1; i <= (int)(n); ++i) // 1 based indexing
@@ -90,47 +105,12 @@ class Factorial {
 };
 
 const int MOD = 1e9+7;
-Factorial* fac = new Factorial(1e6, MOD);
-
-int f(int a, int b) {
-    int numerator = b+a-1;
-    int denomenator1 = b;
-    int denomenator2 = a-1;
-    int fac_num = 1;
-    for(int i = numerator; i >= 1; i--) {
-        if(i > 1e6) fac_num = ((fac_num%MOD)*(i%MOD))%MOD;
-        else {
-            fac_num = ((fac_num%MOD) * (fac->factorialOf(i)%MOD))%MOD;
-            break;
-        }
-    }
-    
-    int inv_fac_d1 = 1;
-    for(int i = denomenator1; i >= 1; i--) {
-        if(i > 1e6) inv_fac_d1 = ((inv_fac_d1%MOD)*(i%MOD))%MOD;
-        else {
-            inv_fac_d1 = ((inv_fac_d1%MOD) * (fac->factorialOf(i)%MOD))%MOD;
-            break;
-        }
-    }
-    inv_fac_d1 = fac->moduloBinaryExponentiation(inv_fac_d1, MOD-2);
-
-    int inv_fac_d2 = 1;
-    for(int i = denomenator2; i >= 1; i--) {
-        if(i > 1e6) inv_fac_d2 = ((inv_fac_d2%MOD)*(i%MOD))%MOD;
-        else {
-            inv_fac_d2 = ((inv_fac_d2%MOD) * (fac->factorialOf(i)%MOD))%MOD;
-            break;
-        }
-    }
-    inv_fac_d2 = fac->moduloBinaryExponentiation(inv_fac_d2, MOD-2);
-
-    return ((((fac_num%MOD) * (inv_fac_d1%MOD))%MOD) * (inv_fac_d2%MOD))%MOD;
-}
-
+Factorial fc(1e6, MOD);
 void solve() {
-    int a, b; cin >> a >> b;
-    cout << f(a, b) << endl;
+    int n; cin >> n;
+    int ans = 0;
+    if(n%2 == 0) ans = (((fc.binomialCoefficientOf(n, n/2)%MOD) - (fc.binomialCoefficientOf(n, (n/2)-1)%MOD)) + MOD)%MOD;
+    cout << ans << endl;
 }
 
 int32_t main() {

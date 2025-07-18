@@ -1,3 +1,19 @@
+/*
+    if n is odd then, 0 solution
+    then we have to check prefix, prefix should not go negative at any index
+
+    then, for n-k length we have to calculate number of ')' we have to put 
+        -> which will be given by this formula, r = (n-k + #'(')/2 ; #'(' is number of extra '('
+        if we do not have enough space to put r ')' then we can't have solution
+        
+        first of all from n-k positions we have to choose r positions to put ')'
+        (n-k)Cr____(1)
+        now we have to get invalid permutations
+        if we will turn '(' of invalid permutations into ')' after the position where it fails
+        we will see r+1 ')' brackets
+        those permutations will be, (n-k)Cr+1 ____(2)
+    therefore we have to do (1)-(2)
+*/
 #include <bits/stdc++.h>  // This will work only for g++ compiler.
 #define for0(i, n) for (int i = 0; i < (int)(n); ++i) // 0 based indexing
 #define for1(i, n) for (int i = 1; i <= (int)(n); ++i) // 1 based indexing
@@ -84,53 +100,38 @@ class Factorial {
         }
 
         int binomialCoefficientOf(int a, int b) {
+            if (b > a || b < 0) return 0;
             return ((((factorial[a]%modulo)*(inverseFactorial[a-b]%modulo))%modulo)*(inverseFactorial[b]%modulo))%modulo;
         }
 
 };
 
-const int MOD = 1e9+7;
-Factorial* fac = new Factorial(1e6, MOD);
+int check(string str) {
+    int count = 0;
+    for(char ch: str) {
+        if(ch == '(') count++;
+        else count--;
 
-int f(int a, int b) {
-    int numerator = b+a-1;
-    int denomenator1 = b;
-    int denomenator2 = a-1;
-    int fac_num = 1;
-    for(int i = numerator; i >= 1; i--) {
-        if(i > 1e6) fac_num = ((fac_num%MOD)*(i%MOD))%MOD;
-        else {
-            fac_num = ((fac_num%MOD) * (fac->factorialOf(i)%MOD))%MOD;
-            break;
-        }
+        if(count < 0) return count;
     }
-    
-    int inv_fac_d1 = 1;
-    for(int i = denomenator1; i >= 1; i--) {
-        if(i > 1e6) inv_fac_d1 = ((inv_fac_d1%MOD)*(i%MOD))%MOD;
-        else {
-            inv_fac_d1 = ((inv_fac_d1%MOD) * (fac->factorialOf(i)%MOD))%MOD;
-            break;
-        }
-    }
-    inv_fac_d1 = fac->moduloBinaryExponentiation(inv_fac_d1, MOD-2);
 
-    int inv_fac_d2 = 1;
-    for(int i = denomenator2; i >= 1; i--) {
-        if(i > 1e6) inv_fac_d2 = ((inv_fac_d2%MOD)*(i%MOD))%MOD;
-        else {
-            inv_fac_d2 = ((inv_fac_d2%MOD) * (fac->factorialOf(i)%MOD))%MOD;
-            break;
-        }
-    }
-    inv_fac_d2 = fac->moduloBinaryExponentiation(inv_fac_d2, MOD-2);
-
-    return ((((fac_num%MOD) * (inv_fac_d1%MOD))%MOD) * (inv_fac_d2%MOD))%MOD;
+    return count;
 }
 
+const int MOD = 1e9+7;
+Factorial fc(1e6, MOD);
 void solve() {
-    int a, b; cin >> a >> b;
-    cout << f(a, b) << endl;
+    int n; cin >> n;
+    string str; cin >> str;
+    int k = str.length();
+    int ans = 0;
+    int extra_o = check(str);
+    int r = (n-k+extra_o)/2;
+    if(n%2 == 0 && extra_o >= 0 && r <= (n-k)) {
+        ans = ((fc.binomialCoefficientOf(n-k, r) - fc.binomialCoefficientOf(n-k, r+1))+MOD)%MOD;
+    }
+
+    cout << ans << endl;
 }
 
 int32_t main() {
