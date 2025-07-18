@@ -1,0 +1,1 @@
+{"name":"Local: MarbelCollector","url":"/home/sanan/Desktop/CSES_Sheet/MarbelCollector.cpp","tests":[{"id":1752677043760,"input":"3\n3 3\n1 1 2\n1 100\n42\n3 1\n1 1 1","output":"1\n99\n0"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/sanan/Desktop/CSES_Sheet/MarbelCollector.cpp","group":"local","local":true}
